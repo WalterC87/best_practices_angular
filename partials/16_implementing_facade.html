@@ -1,0 +1,52 @@
+<div class="slide code_highlight_slide">
+	<span class="section">#4 : Crear una interacción con el Servidor</span>
+	<h1>Implementar una Fachada para la obtención de Datos</h1>
+	
+	<span style="padding-top: 20px;" class="credits">Esto puede ser implementado en cualquier Modelo que necesite interactuar con el API de nuestra aplicación.</span>
+
+	<pre class="highlightjs">
+		<code>
+		var SlideService = Class.extend({
+
+			SERVICE_URL:'&lt;server_url&gt;/rest/slides',
+
+			get:function(){
+				return this.$http.get(this.LOAD_SLIDES_URL).
+							error(this.errorCallback.bind(this));
+			},
+
+			post:function(data){
+				return this.$http.post(this.LOAD_SLIDES_URL,data).
+							error(this.errorCallback.bind(this));
+			},
+
+			put:function(data){
+				return this.$http.put(this.LOAD_SLIDES_URL,data).
+							error(this.errorCallback.bind(this));
+			},
+
+			[...]
+
+			errorCallback: function(response){
+				//Manejo de errores
+			}
+		}
+		});
+
+
+		var SlideServiceProvider = Class.extend({
+
+			instance: new SlideService(),
+
+			$get:['$http',function($http){
+				this.instance.$http = $http;
+				return this.instance;
+			}]
+		})
+
+		angular.module('SlideService',[])
+			.provider('SlideService',SlideServiceProvider);
+</code>
+	</pre>
+	
+</div>       

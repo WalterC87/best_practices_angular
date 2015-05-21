@@ -1,0 +1,34 @@
+<div class="slide code_highlight_slide">
+	<span class="section">#2: Aplicar KISS a nuestros Controladores</span>
+	<h1>Mantener el ámbito($scope) despejado</h1>
+	
+	<span style="padding-top:20px;" class="credits">Angular verifica cada propiedad cuando las propiedades cambian o los valores cambian. Cada <strong>$digest</strong> o <strong>$apply</strong> disparará esta verificación. Se debe seleccionar cuidadosamente que estará disponible en nuestro <strong>$scope</strong> y minimizar la lógica en la vista, consolidar las funciones es la clave para construir aplicaciones ágiles.</span>
+	
+	<pre class="highlightjs">
+		<code>
+		[...]
+
+		defineListeners:function(){
+		   /**
+			* La función "Destroy" no necesita ser llamada desde nuestra vista, 
+			* así que no necesita hacerse público dentro de nuestro scope.
+			*/
+			this.$scope.$on('$destroy',this.destroy.bind(this));
+		},
+
+		[...]
+
+		defineScope:function(){
+		   /**
+			* El "Title" necesita estar consolidado y mostrado por la vista.
+			* En este caso necesita hacerse público en nuestro scope.
+			*/
+			this.$scope.title = "I love OpenCode.ca"
+		},
+
+		[...]
+
+		</code>
+	</pre>
+	
+</div> 

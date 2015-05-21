@@ -1,0 +1,57 @@
+<div class="slide code_highlight_slide">
+	<span class="section">#3: Mover la lógica hacia los Modelos y compartirlos.</span>
+	<h1>Compartir los Modelos con Providers</h1>
+	
+	<span style="padding-top:20px;" class="credits">Es posible escribir "providers" para retornar una nueva instancia de nuestro model cada vez que sea instanciado o compartido.</span>
+
+	<pre class="highlightjs">
+		<code>
+		var NotesModel = EventDispatcher.extend({
+			[...]
+		});
+
+
+		var NotesModelProvider = Class.extend({
+
+			instance: new NotesModel(),
+
+			$get:['$location','$route','NotesService',function($location,$route,NotesService){
+				//Configuring NotesModel before sending out the instance
+				this.instance._routes = $route;
+				this.instance._location = $location;
+				this.instance._notesService = NotesService;
+				return this.instance;
+			}]
+		})
+	//Registering the module and its provider for Angular Usage
+	angular.module('notes.NotesModel',[])
+		.provider('NotesModel',NotesModelProvider);
+
+
+
+	//Inject model anywhere after that
+	var NotesController = BaseController.extend({
+
+		[...]
+
+		init:function($scope,NotesModel,Notifications,$route){
+			this._super($scope)
+			this._notifications = Notifications;
+			
+			//NotesModel is now available to for usage.
+			this._notesModel = NotesModel;
+			this._notesModel.loadSlides();
+		}
+
+		[...]
+	})
+
+
+	NotesController.$inject = ['$scope','NotesModel','Notifications','$route'];
+
+
+
+</code>
+	</pre>
+	
+</div> 

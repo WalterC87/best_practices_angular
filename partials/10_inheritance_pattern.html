@@ -1,0 +1,61 @@
+<div class="slide code_highlight_slide">
+	<span class="section">#2: Aplicar KISS a nuestros Controladores</span>
+	
+	<h1>Implementar Patrón de Herencia usando Class.js</h1>
+
+	<span style="padding-top:20px;" class="credits">Fuente: ClassUtility ~ John Resig ~ <a href="http://ejohn.org/blog/simple-javascript-inheritance/">http://ejohn.org/blog/simple-javascript-inheritance/</a></span>
+	<pre class="highlightjs">
+		<code>var BaseController = Class.extend({
+		$scope:null,
+
+		init:function($scope){
+			this.$scope = $scope;
+			this.defineListeners();
+			this.defineScope();
+		},
+
+		defineListeners:function(){
+			this.$scope.$on('$destroy',this.destroy.bind(this));
+		},
+
+		defineScope:function(){
+			//OVERRIDE : Create all scope properties here to keep track of them.
+		},
+
+		destroy:function(event){
+			//OVERRIDE : Remove all listeners, all timeouts and intervals
+		}
+})
+BaseController.$inject = ['$scope'];
+
+
+
+
+
+//NotesController.js
+var NotesController = BaseController.extend({
+
+	_notifications:null,
+	_notesModel:null,
+	
+	init:function($scope,NotesModel,Notifications,$route){
+		this._super($scope)
+		this._notifications = Notifications;
+		this._notesModel = NotesModel;
+		this._notesModel.loadSlides();
+	},
+
+	defineListeners:function(){
+		this._super();
+		this._notifications.addEventListener(notes.slide.events.TRANSITION_END,...);
+		this._notifications.addEventListener(ui.navigation.events.PREVIOUS,...);
+		this._notifications.addEventListener(ui.navigation.events.NEXT,...);
+	},
+
+	[...]
+
+})
+</code>
+	</pre>
+	
+</div> 

@@ -1,0 +1,44 @@
+<div class="slide code_highlight_slide">
+	<span class="section">#5: Configuración de providers</span>
+	<h1>Configuración de $httpProvider para interceptar las peticiones al servidor</h1>
+	<pre class="highlightjs">
+		<code>
+	angular.module('notes',[])
+		.config(["$httpProvider",
+			function ($httpProvider) {
+
+				var httpStatusCodeInterceptorFactory = function ($q) {
+
+
+					function onSuccess(response){
+						if("success_condition"){
+							return response.data;
+						}else{
+							//Mostrar el mensaje global de error
+							$q.reject(response.data);//Enviar el error que ocurrio
+						}
+					};
+
+
+					function onError(response){
+						//Mostrar el mensaje global de error
+						$q.reject(response);//Enviar el error que ocurrio
+					};
+
+
+
+					return function (promise) {
+						return promise.then(onSuccess,onError);
+					};
+				};
+
+				//Activar el Interceptor
+				$httpProvider.responseInterceptors.push(httpStatusCodeInterceptorFactory);
+      		}])
+
+
+
+
+		</code>
+	</pre>
+</div> 
